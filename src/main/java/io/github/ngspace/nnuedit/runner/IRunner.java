@@ -3,13 +3,13 @@ package io.github.ngspace.nnuedit.runner;
 import java.io.File;
 import java.io.IOException;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 
 public interface IRunner {
-	public boolean canRun(App app);
-	public void run(App app);
-	public boolean canRunFile(File f, App app);
-	public void runFile(File f, App app) throws IOException;
+	public boolean canRun(NNUEdit app);
+	public void run(NNUEdit app);
+	public boolean canRunFile(File f, NNUEdit app);
+	public void runFile(File f, NNUEdit app) throws IOException;
 	
 	public default boolean validFileExt(String[] fileext, String s) {
 		if (s==null) return false;
@@ -18,7 +18,7 @@ public interface IRunner {
 				return true;
 		return false;
 	}
-	public default String containsFiles(String[] starterfiles, App app) {
+	public default String containsFiles(String[] starterfiles, NNUEdit app) {
 		for (String fex : starterfiles)
 			if (app.Folder.contains(fex.toLowerCase(), true))
 				return fex;

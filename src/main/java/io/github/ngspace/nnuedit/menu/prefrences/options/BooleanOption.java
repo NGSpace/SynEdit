@@ -15,7 +15,7 @@ public class BooleanOption extends WidgetOption {
 	public BooleanOption(String name, String key) {super(name, key);}
 	@Override public JComponent getWidget(int width) {
 		JCheckBox jls = new JCheckBox();
-		ItemListener listener = e -> Main.settings.set(key, jls.isSelected());
+		ItemListener listener = _ -> Main.settings.set(key, jls.isSelected());
         jls.setBackground(new Color(10,10,12));
         jls.setSelected(Boolean.valueOf(Main.settings.get(key).toLowerCase()));
         jls.addItemListener(listener);

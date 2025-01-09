@@ -108,21 +108,6 @@ public class ImageUtils {private ImageUtils() {}
 	
 	
 	
-	public static ImageIcon readIconAsset(String name) {
-		try {
-			InputStream is;
-			if ((is = Utils.getAssetAsStream("Icons/" + name))==null) {
-				return ImageUtils.getMissingIcon();
-			}
-			return new ImageIcon(ImageIO.read(is));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return ImageUtils.getMissingIcon();
-		}
-	}
-	
-	
-	
 	public static BufferedImage readImageFromFile(File f) throws IOException {
 		if (FileIO.getFileExt(f.getAbsolutePath()).equalsIgnoreCase("ico")) return ICODecoder.read(f).get(0);
 		else {

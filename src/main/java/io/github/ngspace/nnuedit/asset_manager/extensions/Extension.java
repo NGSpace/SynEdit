@@ -2,7 +2,7 @@ package io.github.ngspace.nnuedit.asset_manager.extensions;
 
 import javax.swing.JComponent;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 
 public abstract class Extension {protected Extension() {}
 	/**
@@ -17,17 +17,17 @@ public abstract class Extension {protected Extension() {}
 	 * Ran when App starts Loading
 	 * @param app
 	 */
-	public void preLoadApplication(App app) {}
+	public void preLoadApplication(NNUEdit app) {}
 	/**
 	 * Ran after App finished Loading
 	 * @param app
 	 */
-	public abstract void loadApplication(App app);
+	public abstract void loadApplication(NNUEdit app);
 	/**
 	 * Ran when app is closed
 	 * @param app
 	 */
-	public abstract void unloadApplication(App app);
+	public abstract void unloadApplication(NNUEdit app);
 	/**
 	 * will build the component that will show up in the Extension tab to represent the extension
 	 * @param width - the width of the window

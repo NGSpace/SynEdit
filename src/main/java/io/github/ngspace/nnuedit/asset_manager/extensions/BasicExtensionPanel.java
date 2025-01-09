@@ -6,7 +6,7 @@ import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.menu.components.IconButton;
 import io.github.ngspace.nnuedit.menu.components.SmartJLabel;
 import io.github.ngspace.nnuedit.menu.prefrences.options.AOption;
@@ -21,7 +21,7 @@ public class BasicExtensionPanel extends JPanel {
 	public BasicExtensionPanel(ExtensionValues ext, int width) {
 		this.setBounds(0, 0, width, 100);
 		setBackground(Window.color);
-		setForeground(App.MenuFG);
+		setForeground(NNUEdit.MenuFG);
 		setLayout(null);
 		Map<String,Object> extSettings = ext.configuration;
 		String extname = String.valueOf(extSettings.get("name"));
@@ -32,7 +32,7 @@ public class BasicExtensionPanel extends JPanel {
 		
 		SmartJLabel name = new SmartJLabel(extname + " : " + extSettings.get("version"));
 		name.setBackground(Window.color);
-		name.setForeground(App.MenuFG);
+		name.setForeground(NNUEdit.MenuFG);
 		name.setBounds(0,0,getWidth(),getHeight()/(description==null ? 1 : 3));
 		name.setFont(AOption.f);
 		
@@ -42,7 +42,7 @@ public class BasicExtensionPanel extends JPanel {
 				int ratiow = i.getIconWidth()/(i.getIconHeight()/100);
 				IconButton ponent = new IconButton(i);
 				ponent.setBackground(Window.color);
-				ponent.setForeground(App.MenuFG);
+				ponent.setForeground(NNUEdit.MenuFG);
 				ponent.setBounds(0, 0, ratiow, 100);
 				add(ponent);
 			} catch (Exception e) {e.printStackTrace();}
@@ -50,7 +50,7 @@ public class BasicExtensionPanel extends JPanel {
 		if (description!=null) {
 			SmartJLabel desc = new SmartJLabel(description);
 			desc.setBackground(Window.color);
-			desc.setForeground(App.MenuFG);
+			desc.setForeground(NNUEdit.MenuFG);
 			desc.setBounds(0,getHeight()/3,getWidth(),getHeight()/3 * 2);
 			Font f = new Font(AOption.FT, Font.BOLD, 16);
 			desc.setFont(f);

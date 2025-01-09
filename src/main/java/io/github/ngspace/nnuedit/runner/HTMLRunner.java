@@ -4,7 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 import io.github.ngspace.nnuedit.window.abstractions.Editor;
 import io.github.ngspace.nnuedit.window.abstractions.Window;
@@ -17,14 +17,14 @@ public class HTMLRunner implements IRunner {
 	public HTMLRunner() {/**/}
 
 	@Override
-	public boolean canRun(App app) {
+	public boolean canRun(NNUEdit app) {
 		Window selwin = app.getSelectedWindow();
 		return (selwin!=null&&(selwin.getComponent() instanceof Editor editor
 				&&validFileExt(FileExtentions,editor.getFilePath())))||containsFiles(StarterFiles,app)!=null;
 	}
 
 	@Override
-	public void run(App app) {
+	public void run(NNUEdit app) {
 		try {
 			Window w = app.getSelectedWindow();
 			
@@ -41,6 +41,6 @@ public class HTMLRunner implements IRunner {
 		}
 	}
 
-	@Override public void runFile(File f, App app) throws IOException {Desktop.getDesktop().browse(f.toURI());}
-	@Override public boolean canRunFile(File f, App app) {return validFileExt(FileExtentions,(f.getPath()));}
+	@Override public void runFile(File f, NNUEdit app) throws IOException {Desktop.getDesktop().browse(f.toURI());}
+	@Override public boolean canRunFile(File f, NNUEdit app) {return validFileExt(FileExtentions,(f.getPath()));}
 }

@@ -24,12 +24,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 
-import io.github.ngspace.nnuedit.App;
 import io.github.ngspace.nnuedit.Main;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.menu.components.IconButton;
 import io.github.ngspace.nnuedit.utils.FileIO;
-import io.github.ngspace.nnuedit.utils.ImageUtils;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 import io.github.ngspace.nnuedit.window.abstractions.Window;
 
@@ -38,7 +37,7 @@ public class FolderPanel extends JPanel {
 	private static final long serialVersionUID = -936840551668141819L;
 	private String FolderPath = "";
 	public final JScrollPane FilesPanel;
-	public final App app;
+	public final NNUEdit app;
 	public final DirectoryTree tree;
 	public static final int ROW_HEIGHT = 25;
 	public static final int PADDING = 3;
@@ -71,7 +70,7 @@ public class FolderPanel extends JPanel {
 		return Math.clamp(DragWidth,MIN_WIDTH,app.getWidth()/2);
 	}
 
-	public FolderPanel(App app) {
+	public FolderPanel(NNUEdit app) {
         this.app = app;
         
 		this.setDoubleBuffered(true);
@@ -188,7 +187,7 @@ public class FolderPanel extends JPanel {
 	
 	private void initDrag() {
 		DragBar = new JButton();
-		DragBar.setIcon(ImageUtils.readIconAsset("ui/Bar.png"));
+		DragBar.setIcon(AssetManager.getIcon("ui/bar"));
 		DragWidth = Main.settings.getInt("folder.panelwidth");
 		DragBar.setBounds(DragWidth-10,0,10,10000);
 		DragBar.setBorderPainted(false); 
@@ -300,24 +299,6 @@ public class FolderPanel extends JPanel {
 		for (DefaultMutableTreeNode tn : files) root.add(tn);
 		return root;
 	}
-//	public String getExpansionState() {
-//		StringBuilder sb = new StringBuilder();
-//	    for(int i =0 ; i < tree.getRowCount(); i++) {
-//	        TreePath tp = tree.getPathForRow(i);
-//	        if(tree.isExpanded(i)) {
-//	            sb.append(tp.toString());
-//	            sb.append(",");
-//	        }
-//	    }
-//	    return sb.toString();
-//	}
-//	
-//	public void setExpansionState(String s) {
-//	    for(int i = 0 ; i<tree.getRowCount(); i++) {
-//	        TreePath tp = tree.getPathForRow(i);
-//	        if(s.contains(tp.toString())) tree.expandRow(i);
-//	    }
-//	}
 	
 	public <T> boolean arrcontains(T[] file, T root) {
 		for (var v : file) if (root.equals(v)) return true;

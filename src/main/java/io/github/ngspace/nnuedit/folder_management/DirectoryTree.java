@@ -31,7 +31,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.utils.FileIO;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 
@@ -46,17 +46,18 @@ public class DirectoryTree extends JTree implements KeyListener {
 		setCellRenderer(new FolderTreeRenderer());
 		
 		setFont(panel.app.getFont());
-		registerKeyboardAction(e->panel.newFile(),KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),
+		registerKeyboardAction(_->panel.newFile(),KeyStroke.getKeyStroke(KeyEvent.VK_N,InputEvent.CTRL_DOWN_MASK),
 	    	JComponent.WHEN_FOCUSED);
         setDragEnabled(true);
         
         setTransferHandler(new FolderTransferHandler()); 
         setDropMode(DropMode.ON_OR_INSERT);
+        setToggleClickCount(0);
         
         getSelectionModel().setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
 		
 		setBounds(30, 0, 646, 723);
-		setFont(new Font(App.FONT, Font.BOLD, 20));
+		setFont(new Font(NNUEdit.FONT, Font.BOLD, 20));
 		setRootVisible(true);
 		Color linecolor = new Color(78, 78, 78, 150);
 		setBorder(new EmptyBorder(0, 0, 0, 0) {
@@ -101,7 +102,7 @@ public class DirectoryTree extends JTree implements KeyListener {
 				    getPopupMenu().show(e.getComponent(), e.getX(), e.getY());
 			    }
 			}
-			@Override public void mousePressed(MouseEvent e) {
+			@Override public void mouseReleased(MouseEvent e) {
 			    int row = getRowForLocation(e.getX(),e.getY());
 			    
 			    if(row==-1) clearSelection();
@@ -110,6 +111,11 @@ public class DirectoryTree extends JTree implements KeyListener {
 				if(e.getClickCount() == 2&&getSelectionCount()>0) {
 					File f = new File(nodeFromRow(getSelectionRows()[0]).getUserObject().toString());
 	                if (!f.isDirectory()) panel.app.openFile(f.getAbsolutePath());
+	                
+	                if (isExpanded(getSelectionPaths()[0])) collapsePath(getSelectionPaths()[0]);
+	                else expandPath(getSelectionPaths()[0]);
+	                
+	                repaint();
 				}
 			}
 		});
@@ -123,9 +129,9 @@ public class DirectoryTree extends JTree implements KeyListener {
 		if (getModel()==null) {
 
     		g.setFont(getFont());
-    		g.setColor(App.MenuFG);
+    		g.setColor(NNUEdit.MenuFG);
     		
-    		App.adjustAntialias(g, true);
+    		NNUEdit.adjustAntialias(g, true);
     		int i = 0;
     		int bx = 100000;
     		int starty = 0;
@@ -142,7 +148,8 @@ public class DirectoryTree extends JTree implements KeyListener {
 	    		g.drawString(str, x, y);
 	    		i++;
 	    		bx = x<bx?x:bx;
-    		}starty-=strheight-5;
+    		}
+    		starty-=strheight-5;
     		int w = getWidth()-bx*2+10;
     		int h = strheight*strs.length+10;
     		
@@ -150,7 +157,7 @@ public class DirectoryTree extends JTree implements KeyListener {
     		g.drawRoundRect(bx-5, starty, w, h, 20, 20);
     		return;
 		}
-		super.paint(gra);
+		super.paintComponent(gra);
 	}
 	@Override public void keyReleased(KeyEvent e) {
 		if (e.getKeyCode()==KeyEvent.VK_TAB) setSelectionPath(new TreePath(getModel().getRoot()));

@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 import javax.swing.JComponent;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.asset_manager.StringTable;
 import io.github.ngspace.nnuedit.asset_manager.extensions.ExtensionManager;
 import io.github.ngspace.nnuedit.menu.prefrences.options.BooleanOption;
@@ -53,7 +53,7 @@ public class Registries {private Registries() {}
 	
 	
 	public static void registerDefaultRunners() {
-		Runners.put(App.PROJ, new ProjectRunner());
+		Runners.put(NNUEdit.PROJ, new ProjectRunner());
 		Runners.put("python", new PythonRunner());
 		Runners.put("shell", new ShellRunner());
 		Runners.put("html", new HTMLRunner());
@@ -73,7 +73,7 @@ public class Registries {private Registries() {}
 	
 	
 	public static void registerDefaultPrefs() {
-		Consumer<JComponent> open = c->FileIO.openInExplorer(new File(FileIO.getConfigFolderPath()));
+		Consumer<JComponent> open = _->FileIO.openInExplorer(new File(FileIO.getConfigFolderPath()));
 		
 		PreferencesTabs.clear();
 		/* Appearance */

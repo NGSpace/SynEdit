@@ -55,7 +55,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.ConfigurableCaret;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.menu.components.NGSScrollPane;
@@ -76,7 +76,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
 	private static String syn = "editor.syntax";
     private boolean saved = true;
     public final Window window;
-	public final App app;
+	public final NNUEdit app;
 
 	public JMenuItem jpmln = new JMenuItem("1");
 
@@ -94,7 +94,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
     	return FilePath;
     }
 
-	public EditorTextArea(App app, Window w) {
+	public EditorTextArea(NNUEdit app, Window w) {
 		
 		window = w;
 		this.app = app;
@@ -110,7 +110,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
         });
         
 		try {
-	        InputStream inpstr = Utils.getAssetAsStream("Style.xml");
+	        InputStream inpstr = Utils.getAsset("Style.xml");
 			Theme theme = Theme.load(inpstr);
 	        theme.apply(this);
 //			snxsc = new SyntaxScheme(true);
@@ -134,7 +134,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
         
         JMenuItem FIND = new JMenuItem(get("editor.find"));
 
-        FIND.addActionListener(e -> openFind());
+        FIND.addActionListener(_ -> openFind());
         FIND.setMnemonic(KeyEvent.VK_F);
         
         //this.getPopupMenu().addSeparator();
@@ -142,7 +142,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
         jpm.add(FIND,9);
         jpm.addSeparator();
         jpm.add(jpmln);
-        setBorder(new EmptyBorder(0,App.getBuffer(),0,App.getBuffer()));
+        setBorder(new EmptyBorder(0,NNUEdit.getBuffer(),0,NNUEdit.getBuffer()));
         jpm.addPopupMenuListener(new PopupMenuListener() {
 			
 			@Override
@@ -183,8 +183,8 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
         ((ConfigurableCaret) this.getCaret()).setBlinkRate(0);
         
         JScrollPane sp = window.getScrollPane();
-        sp.getHorizontalScrollBar().addAdjustmentListener(e -> resize());
-        sp.getVerticalScrollBar().addAdjustmentListener(e -> resize());
+        sp.getHorizontalScrollBar().addAdjustmentListener(_ -> resize());
+        sp.getVerticalScrollBar().addAdjustmentListener(_ -> resize());
         
 
         DropTargetListener myDragDropListener = new DropTargetAdapter() {
@@ -248,7 +248,7 @@ public class EditorTextArea extends RSyntaxTextArea implements DocumentListener,
 		vis.height +=50;
 		SmartGraphics2D.SuccessfulDrawCalls = 0;
 		Graphics2D graphics = new SmartGraphics2D(g, vis);
-		App.adjustAntialias(g,false);
+		NNUEdit.adjustAntialias(g,false);
 		if (ui != null) {
 			ui.update(graphics, this);
 		}

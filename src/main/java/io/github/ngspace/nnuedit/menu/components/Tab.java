@@ -14,7 +14,7 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.Icon;
 import javax.swing.JButton;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.utils.ImageUtils;
 import io.github.ngspace.nnuedit.window.abstractions.Window;
@@ -27,13 +27,13 @@ public class Tab extends JButton implements MouseListener, MouseMotionListener {
 	private static final long serialVersionUID = -1985094871969942L;
 	public boolean showX = false;
 	public boolean highlightX = false;
-	protected final App app;
+	protected final NNUEdit app;
 	public static int padding = 3;
 	protected final Window window;
 	
 	public Rectangle rect;
 	
-	public Tab(App app, Window window) {
+	public Tab(NNUEdit app, Window window) {
 		super();
 		this.app = app;
 		this.window = window;
@@ -62,7 +62,7 @@ public class Tab extends JButton implements MouseListener, MouseMotionListener {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		g.setColor(app.getSelectedWindow()==window ?
 				window.getComponent().getBackground() : app.MenuBG);
-		App.adjustAntialias(g,false);
+		NNUEdit.adjustAntialias(g,false);
 		g.fillRoundRect(padding, 0, getWidth() - padding * 2, getHeight()*2, 30, 30);
 		g.setColor(app.MenuBG.darker().darker());
 		
@@ -71,7 +71,7 @@ public class Tab extends JButton implements MouseListener, MouseMotionListener {
 
 		g.setFont(getFont());
 		
-		g.setColor(App.MenuFG);
+		g.setColor(NNUEdit.MenuFG);
 		
 		int strwidth = g.getFontMetrics().stringWidth(str);
 		int x = getWidth() / 2 - (strwidth / 2);
@@ -83,7 +83,7 @@ public class Tab extends JButton implements MouseListener, MouseMotionListener {
 		/* Draw X button */
 		if (showX) {
 			if (!highlightX) {
-				g.setColor(App.MenuFG.brighter());
+				g.setColor(NNUEdit.MenuFG.brighter());
 				g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			} else {
 				//g.setColor(new Color(0,140,255,150));
@@ -94,7 +94,7 @@ public class Tab extends JButton implements MouseListener, MouseMotionListener {
 			g.drawLine(getWidth()-50, 10, getWidth()-20, getHeight()-10);
 			g.drawLine(getWidth()-20 , 10, getWidth()-50, getHeight()-10);
 		} else if (!window.isSaved()) {
-			g.setColor(App.MenuFG.brighter());
+			g.setColor(NNUEdit.MenuFG.brighter());
 			g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
 			g.fillOval(getWidth()-50+10, getHeight()/2-5, 10, 10);
 		}

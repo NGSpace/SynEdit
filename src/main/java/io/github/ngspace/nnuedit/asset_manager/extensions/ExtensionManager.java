@@ -3,7 +3,6 @@ package io.github.ngspace.nnuedit.asset_manager.extensions;
 import static java.lang.System.out;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -13,7 +12,7 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.utils.FileIO;
 import io.github.ngspace.nnuedit.utils.settings.Settings;
@@ -24,9 +23,7 @@ public class ExtensionManager { private ExtensionManager() {}
 	
 	
 	
-	
-	
-	public static boolean loadExtensions(boolean exit) throws ReflectiveOperationException,UnsupportedEncodingException{
+	public static boolean loadExtensions(boolean exit) throws ReflectiveOperationException {
 		File Folder = new File(FileIO.getConfigFolderPath() + "/Extensions");
 		if (!Folder.exists()) Folder.mkdirs();
 		File[] ExtensionFolder = Folder.listFiles();
@@ -94,9 +91,9 @@ public class ExtensionManager { private ExtensionManager() {}
 	public static void startExtensions() {for (ExtensionValues e : Extensions) e.extension.loadExtension();}
 	public static void shutdownExtensions() {for (ExtensionValues e : Extensions) e.extension.unloadExtension();}
 	
-	public static void preStartApp(App a) {for (ExtensionValues e : Extensions) e.extension.preLoadApplication(a);}
-	public static void startApp(App a) {for (ExtensionValues e : Extensions) e.extension.loadApplication(a);}
-	public static void shutdownApp(App a) {for (ExtensionValues e : Extensions) e.extension.unloadApplication(a);}
+	public static void preStartApp(NNUEdit a) {for (ExtensionValues e : Extensions) e.extension.preLoadApplication(a);}
+	public static void startApp(NNUEdit a) {for (ExtensionValues e : Extensions) e.extension.loadApplication(a);}
+	public static void shutdownApp(NNUEdit a) {for (ExtensionValues e : Extensions) e.extension.unloadApplication(a);}
 	
 	
 	

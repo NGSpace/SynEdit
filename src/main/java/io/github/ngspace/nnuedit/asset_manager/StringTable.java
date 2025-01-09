@@ -17,13 +17,13 @@ public class StringTable {private StringTable(){}
 		public StringTableMap(String type) {
 			String lang = type;
 			try {
-				if (Utils.getAssetAsStream("Lang/Lang_"+lang+".properties")==null) {
+				if (Utils.getAsset("Lang/Lang_"+lang+".properties")==null) {
 					out.println("\"Lang_"+lang+".properties\" does not exist.");
 					lang = "en";
 				}
 			} catch (Exception e) {e.printStackTrace();}
 			
-			try {process(Utils.getAssetAsStream("Lang/Lang_"+lang+".properties"));
+			try {process(Utils.getAsset("Lang/Lang_"+lang+".properties"));
 			} catch (IOException e) {e.printStackTrace();}
 		}
 	}
@@ -109,7 +109,7 @@ public class StringTable {private StringTable(){}
 	}
 	public static String getSelectedLang() {
 		Settings settings = Main.settings;
-		if (Utils.getAssetAsStream("Lang/Lang_"+settings.get("system.language")+".properties")!=null)
+		if (Utils.getAsset("Lang/Lang_"+settings.get("system.language")+".properties")!=null)
 			return settings.get("system.language");
 		return System.getProperty("user.language.format");
 	}

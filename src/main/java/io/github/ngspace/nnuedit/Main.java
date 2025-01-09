@@ -1,7 +1,6 @@
 package io.github.ngspace.nnuedit;
 
 import static java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment;
-import static java.awt.GraphicsEnvironment.isHeadless;
 import static java.lang.System.err;
 import static java.lang.System.out;
 
@@ -9,6 +8,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Toolkit;
 import java.io.BufferedReader;
@@ -21,7 +21,6 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
@@ -47,7 +46,7 @@ public class Main {
 	/**
 	 * the name of the editor bcz maybe I will want to change it in the future (again).
 	 */
-	public static final String EFFECTIVE_EDITORNAME = "NNUEdit";//StringTable.getString("editor.name");
+	public static final String EFFECTIVE_EDITORNAME = "nnuedit";
 	public static String EDITORNAME = StringTable.get("editor.name");
 	
 	public static Instant start;
@@ -59,36 +58,33 @@ public class Main {
 	public static Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 	
 	
-	public static void preExec(boolean b, boolean c) {
+	/**
+     * the entry point of this weird ass code editor
+     * @param args which file to open at startup (leave empty for no selected file)
+	 * @throws IOException 
+     */
+	public static void main(String[] args) {
 		try {
 			start = Instant.now();
 			VersionInfo = new VersionInfo();
 			
-//			System.setProperty("sun.awt.noerasebackground", "true");
 			System.setProperty("sun.java2d.uiScale", "1.0");
-			
-			//System.setProperty("sun.java2d.opengl", "true"); /* Do it yourself if you want to */
 
 			shouldEvenTry = "worth a shot!";
 
-			FancyPrint.initOutput(new File(FileIO.getConfigFolderPath() + "log"), b, c);
+			FancyPrint.initOutput(new File(FileIO.getConfigFolderPath() + "log"), true, true);
 	        out.println("Version of NNUEdit : " + VersionInfo.version);
 	        
-			if (isHeadless()) {
-				out.println("BRO RUNNING THIS ON A HEADLESS JVM/MACHINE XD");
-				shouldEvenTry = "no"; /* Ik I could've just Syste
-				m.exit() I just wanted to make this joke xD */
+			if (GraphicsEnvironment.isHeadless()) {
+				out.println("BRO RUNNING THIS ON A HEADLESS JVM XD");
+				shouldEvenTry = "no"; /* Ik I could've just System.exit() I just wanted to make this joke xD */
 			}
 			
-			try {
-				AssetManager.addDefaultIcons();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			AssetManager.addDefaultIcons();
 			
 		    try {
 		    	getLocalGraphicsEnvironment().registerFont(Font.createFont(Font.TRUETYPE_FONT, 
-		    		Utils.getAssetAsStream("Fonts/Consolas.ttf"))); //Will certainly fail
+		    		Utils.getAsset("Fonts/Consolas.ttf"))); //Will certainly fail
 		    } catch(IOException | FontFormatException e) {e.printStackTrace();}//Cry even tho you know it was gonna fail
 			
 		    ImageIO.setUseCache(false);
@@ -135,19 +131,11 @@ public class Main {
 			JOptionPane.showMessageDialog(null, sStackTrace, "Fatal error occured!", 0);
 			crash(1);
 		}
-	}
-	/**
-     * the entry point of this weird ass code editor
-     * @param args which file to open at startup (leave empty for no selected file)
-	 * @throws IOException 
-     */
-	public static void main(String[] args) {
-		preExec(true, true);
 		
 		
 		if (shouldEvenTry.equals("no")) {giveUp();}
 		
-		Thread.setDefaultUncaughtExceptionHandler((t,e)->e.printStackTrace());
+		Thread.setDefaultUncaughtExceptionHandler((_,e)->e.printStackTrace());
     	
 		loadSettings();
 		
@@ -163,15 +151,19 @@ public class Main {
 		final StringBuilder starttext = new StringBuilder();
 		if (args.length>0) {
 			starttext.append(args[0]);
-			if (!new File(args[0]).exists()&&!(args[0].isEmpty())) 
-				{err.println("File or Folder Doesn't exist: " + args[0]);starttext.setLength(0);}
+			if (!new File(args[0]).exists()&&!(args[0].isEmpty())) {
+				err.println("File or Folder Doesn't exist: " + args[0]);
+				starttext.setLength(0);
+			}
 		}
 		
         SwingUtilities.invokeLater(() -> {
 			try {
-				Thread.setDefaultUncaughtExceptionHandler((t,e)->e.printStackTrace());
-				App app = new App(starttext.toString());
+				Thread.setDefaultUncaughtExceptionHandler((_,e)->e.printStackTrace());
+				NNUEdit app = new NNUEdit(starttext.toString());
+				
 				ExtensionManager.startApp(app);
+				
 				out.println("Total milliseconds took to start: "+Duration.between(start, Instant.now()).toMillis());
 		        
 		        if (settings.getBoolean("system.checkversion"))
@@ -193,7 +185,7 @@ public class Main {
 				app.setLocationRelativeTo(null);
 				app.setVisible(true);
 		    	
-		    	Main.settings.addValueChangeListener((key, newVal, oldval, stng)-> {
+		    	Main.settings.addValueChangeListener((key, newVal, _, _)-> {
 		    		if ("system.language".equals(key)) {
 		    	    	StringTable.loadLang(String.valueOf(newVal));
 		    	    	EDITORNAME = StringTable.get("system.name");
@@ -207,14 +199,14 @@ public class Main {
     }
 	public static void loadSettings() {
 		try {
-
 			File f = new File(FileIO.getConfigFolderPath() + EFFECTIVE_EDITORNAME + ".properties");
-	    	settings = new Settings(f, new Settings(Utils.getAssetAsStream("NNUEdit.properties")).getMap());
+	    	settings = new Settings(f, new Settings(Utils.getAsset("NNUEdit.properties")).getMap());
 	    	theme = settings;
 	    	
 	    	
-	    	if ("ask".equals(settings.get("system.language"))) settings.set("system.language",UserMessager.comboInput
-	    			("Select language","Select language",StringTable.getLangMap(),StringTable.getSelectedLang()));
+	    	if ("ask".equals(settings.get("system.language"))) 
+	    		settings.set("system.language",UserMessager.comboInput("Select language","Select language",
+	    				StringTable.getLangMap(),StringTable.getSelectedLang()));
 	    	
 	    	StringTable.loadLang(StringTable.getSelectedLang());
 	    	
@@ -222,13 +214,6 @@ public class Main {
 		} catch (Exception e) {e.printStackTrace();/* There is no point in trying :P. */giveUp();}
 	}
 	private static void giveUp() {crash(1);}
-	public static Callable<Boolean> hook = ()->true;
-	public static void crash(int code) {
-		try {
-			if (hook==null||hook.call()) System.exit(code);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.exit(2);
-		}
-	}
+	
+	public static void crash(int code) {System.exit(code);}
 }

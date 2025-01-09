@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.utils.registry.Registries;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 
@@ -21,12 +21,12 @@ public class ProjectRunner implements IRunner {
 	public static final String PROJECTFILE = ".nnuproject";
 
 	@Override
-	public boolean canRun(App app) {
+	public boolean canRun(NNUEdit app) {
 		return app.Folder.contains(PROJECTFILE.toLowerCase(), true);
 	}
 
 	@Override
-	public void run(App app) {
+	public void run(NNUEdit app) {
 		String runnertype = "Unknown";
 		try {
 			IRunner resRunner = null;
@@ -71,11 +71,11 @@ public class ProjectRunner implements IRunner {
 		}
 	}
 
-	@Override public void runFile(File f, App app) throws IOException {
+	@Override public void runFile(File f, NNUEdit app) throws IOException {
 		throw new ProjectCannotRunItselfException("Don't try to outsmart me: project can't run project");
 	}
 
-	@Override public boolean canRunFile(File f, App app) {return false;}
+	@Override public boolean canRunFile(File f, NNUEdit app) {return false;}
 }
 class ProjectCannotRunItselfException extends IOException {
 	public ProjectCannotRunItselfException(String string) {super(string);}

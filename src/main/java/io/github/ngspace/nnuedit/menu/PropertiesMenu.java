@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.menu.components.PropertiesRenderer;
@@ -41,13 +41,13 @@ public class PropertiesMenu extends WindowMenu implements Savable, Editor {
 	
 	private static final long serialVersionUID = -1174684557411847360L;
 	
-	public App app;
+	public NNUEdit app;
 	public JScrollPane sp;
 	protected File file;
 	protected boolean isSaved = true;
 	protected JTable table;
 	
-	public PropertiesMenu(App app, Window w, File f) {
+	public PropertiesMenu(NNUEdit app, Window w, File f) {
 		super(w);
 	    final String[] columnNames = {get("prop.prop"), get("prop.val")};
 		file = f;
@@ -86,7 +86,7 @@ public class PropertiesMenu extends WindowMenu implements Savable, Editor {
 			@Override public void popupMenuCanceled(PopupMenuEvent e) {/**/}
         });
         JMenuItem deleteItem = new JMenuItem(get("prop.context.del"));
-        deleteItem.addActionListener(e->{
+        deleteItem.addActionListener(_->{
         	int[] rows = table.getSelectedRows();
         	for(int i=0;i<rows.length;i++){
         		dtm.removeRow(rows[i]-i);
@@ -95,13 +95,13 @@ public class PropertiesMenu extends WindowMenu implements Savable, Editor {
         popupMenu.addSeparator();
 
         JMenuItem insertBelow = new JMenuItem(get("prop.context.insertbelow"));
-        insertBelow.addActionListener(e->{
+        insertBelow.addActionListener(_->{
         	int[] rows = table.getSelectedRows();
         	dtm.insertRow(rows[rows.length-1]+1, new Object[] {"key","value"});
         });popupMenu.add(insertBelow);
         
         JMenuItem insertAbove = new JMenuItem(get("prop.context.insertabove"));
-        insertAbove.addActionListener(e->{
+        insertAbove.addActionListener(_->{
         	int[] rows = table.getSelectedRows();
         	dtm.insertRow(rows[0], new Object[] {"key","value"});
         });popupMenu.add(insertAbove);
@@ -113,7 +113,7 @@ public class PropertiesMenu extends WindowMenu implements Savable, Editor {
         table.setComponentPopupMenu(popupMenu);
         final JPopupMenu headerPopupMenu = new JPopupMenu();
         JMenuItem insertHeader = new JMenuItem(get("prop.context.insertbelow"));
-        insertHeader.addActionListener(e->dtm.insertRow(0, new Object[] {"key","value"}));
+        insertHeader.addActionListener(_->dtm.insertRow(0, new Object[] {"key","value"}));
         headerPopupMenu.add(insertHeader);
         table.getTableHeader().setComponentPopupMenu(headerPopupMenu);
         dtm.setColumnIdentifiers(columnNames);
@@ -142,7 +142,7 @@ public class PropertiesMenu extends WindowMenu implements Savable, Editor {
 			e.printStackTrace();
 			UserMessager.showErrorDialogTB("prop.cannotread.title", "prop.cannotread", e.getMessage());
     	}
-        dtm.addTableModelListener(e->isSaved = false);
+        dtm.addTableModelListener(_->isSaved = false);
         
         sp = new JScrollPane(table);
         sp.setOpaque(true);

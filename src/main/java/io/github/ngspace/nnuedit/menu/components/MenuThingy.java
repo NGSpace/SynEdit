@@ -1,6 +1,6 @@
 package io.github.ngspace.nnuedit.menu.components;
 
-import static io.github.ngspace.nnuedit.App.MenuFG;
+import static io.github.ngspace.nnuedit.NNUEdit.MenuFG;
 import static io.github.ngspace.nnuedit.asset_manager.StringTable.get;
 import static java.lang.System.out;
 
@@ -16,7 +16,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.utils.FileIO;
 import io.github.ngspace.nnuedit.window.AboutWindow;
@@ -29,9 +29,9 @@ public class MenuThingy extends JMenuBar {
 	
 	private static final long serialVersionUID = -6781221982811029019L;
 	
-	public App app;
+	public NNUEdit app;
 	
-	public MenuThingy(App app) {
+	public MenuThingy(NNUEdit app) {
 		super();
 		
 		this.app = app;
@@ -46,12 +46,12 @@ public class MenuThingy extends JMenuBar {
         FILE.setToolTipText(get("menubar.file.tooltip"));
         
         MenuItem SAVE = new MenuItem(get("menubar.save"));
-        SAVE.addActionListener(e -> app.saveAll(false));
+        SAVE.addActionListener(_ -> app.saveAll(false));
         SAVE.setMnemonic(KeyEvent.VK_S);
         SAVE.setToolTipText(get("menubar.save.tooltip"));
         
         MenuItem NEW = new MenuItem(get("menubar.neweditor"));
-        NEW.addActionListener(e -> {
+        NEW.addActionListener(_ -> {
         	TextEditorWindow txtwin = new TextEditorWindow(app, "");
         	app.addWindow(txtwin);
         });
@@ -59,7 +59,7 @@ public class MenuThingy extends JMenuBar {
         NEW.setToolTipText(get("menubar.neweditor.tooltip"));
         
         MenuItem OPEN = new MenuItem(get("menubar.openfile"));
-        OPEN.addActionListener(e -> {
+        OPEN.addActionListener(_ -> {
 
     		out.println("Inputing file");
     		String file = FileIO.openFileDialog(false);
@@ -77,17 +77,17 @@ public class MenuThingy extends JMenuBar {
         OPEN.setToolTipText(get("menubar.openfile.tooltip",Main.EDITORNAME));
         
         MenuItem OPENFOLDER = new MenuItem(get("menubar.openfolder"));
-        OPENFOLDER.addActionListener(e -> app.openFolderDialog());
+        OPENFOLDER.addActionListener(_ -> app.openFolderDialog());
         OPENFOLDER.setMnemonic(KeyEvent.VK_E);
         OPENFOLDER.setToolTipText(get("menubar.openfolder.tooltip",Main.EDITORNAME));
         
         MenuItem CLOSE = new MenuItem(get("menubar.close"));
-        CLOSE.addActionListener(e -> app.closeSelectedWindow());
+        CLOSE.addActionListener(_ -> app.closeSelectedWindow());
         CLOSE.setMnemonic(KeyEvent.VK_C);
         CLOSE.setToolTipText(get("menubar.close.tooltip"));
         
         MenuItem EXIT = new MenuItem(get("menubar.exit"));
-        EXIT.addActionListener(e -> app.close());
+        EXIT.addActionListener(_ -> app.close());
         EXIT.setMnemonic(KeyEvent.VK_C);
         EXIT.setToolTipText(get("menubar.exit.tooltip",Main.EDITORNAME));
         
@@ -107,11 +107,11 @@ public class MenuThingy extends JMenuBar {
         HELP.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,15));
         HELP.setToolTipText(get("menubar.help.tooltip"));
         MenuItem PREFRENCES = new MenuItem(get("menubar.options"));
-        PREFRENCES.addActionListener(e -> {app.addWindow(new PreferencesWindow(app));app.redraw();});
+        PREFRENCES.addActionListener(_ -> {app.addWindow(new PreferencesWindow(app));app.redraw();});
         PREFRENCES.setMnemonic(KeyEvent.VK_P);
         PREFRENCES.setToolTipText(get("menubar.options.tooltip",Main.EDITORNAME));
         MenuItem CREDITS = new MenuItem(get("menubar.about"));
-        CREDITS.addActionListener(e -> app.addWindow(new AboutWindow(app)));
+        CREDITS.addActionListener(_ -> app.addWindow(new AboutWindow(app)));
         CREDITS.setMnemonic(KeyEvent.VK_A);
         CREDITS.setToolTipText(get("menubar.about.tooltip",Main.EDITORNAME));
         
@@ -127,11 +127,11 @@ public class MenuThingy extends JMenuBar {
         RUN.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,15));
         RUN.setToolTipText(get("menubar.run.tooltip"));
         MenuItem RUNPROJ = new MenuItem(get("menubar.runproj"));
-        RUNPROJ.addActionListener(e -> app.runApp());
+        RUNPROJ.addActionListener(_ -> app.runApp());
         RUNPROJ.setMnemonic(KeyEvent.VK_R);
         RUNPROJ.setToolTipText(get("menubar.runproj.tooltip"));
         MenuItem RUNFILE = new MenuItem(get("menubar.runfile"));
-        RUNFILE.addActionListener(e -> app.runFile());
+        RUNFILE.addActionListener(_ -> app.runFile());
         RUNFILE.setMnemonic(KeyEvent.VK_F);
         RUNFILE.setToolTipText(get("menubar.runfile.tooltip"));
         
@@ -173,5 +173,5 @@ class MenuItem extends JMenuItem {
 }
 class Menu extends JMenu {
 	private static final long serialVersionUID = -1789396700301437504L;
-	public Menu(String str, App app) {super(str);setOpaque(true);setBackground(app.MenuBG);setForeground(MenuFG);}
+	public Menu(String str, NNUEdit app) {super(str);setOpaque(true);setBackground(app.MenuBG);setForeground(MenuFG);}
 }

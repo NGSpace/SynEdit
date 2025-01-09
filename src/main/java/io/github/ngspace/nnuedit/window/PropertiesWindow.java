@@ -5,7 +5,7 @@ import java.io.File;
 
 import javax.swing.JComponent;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.menu.PropertiesMenu;
 import io.github.ngspace.nnuedit.menu.components.NGSScrollPane;
 import io.github.ngspace.nnuedit.menu.components.Tab;
@@ -18,9 +18,9 @@ public class PropertiesWindow implements EditorWindow {
 	protected PropertiesMenu menu;
 	protected NGSScrollPane sp;
 	protected Tab tab;
-	protected App app;
+	protected NNUEdit app;
 	
-	public PropertiesWindow(App app, File file) {
+	public PropertiesWindow(NNUEdit app, File file) {
 		this.sp = new NGSScrollPane(app);
         this.tab = new Tab(app, this);
 		this.menu = new PropertiesMenu(app, this, file);
@@ -33,7 +33,7 @@ public class PropertiesWindow implements EditorWindow {
         sp.getVerticalScrollBar().setLocation(sp.getWidth() - 25, 0);
         
         sp.setOpaque(true);
-        app.addRedrawListener(a->menu.resize());
+        app.addRedrawListener(_->menu.resize());
 	}
 	@Override public boolean isSaved() {return menu.isSaved();}
 	@Override public boolean save(boolean ask) {return menu.save(ask);}
@@ -43,7 +43,7 @@ public class PropertiesWindow implements EditorWindow {
 	@Override public NGSScrollPane getScrollPane() {return sp;}
 	@Override public JComponent getComponent() {return menu;}
 	@Override public Tab getTab() {return tab;}
-	@Override public App getApp() {return app;}
+	@Override public NNUEdit getApp() {return app;}
 	@Override public boolean closeEvent(Object... Reason) {return save(!isSaved());}
 	@Override public Editor getEditor() {return menu;}
 

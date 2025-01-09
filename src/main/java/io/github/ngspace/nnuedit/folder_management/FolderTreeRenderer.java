@@ -17,7 +17,7 @@ import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.utils.FileIO;
 import io.github.ngspace.nnuedit.utils.ImageUtils;
@@ -55,7 +55,7 @@ public class FolderTreeRenderer extends DefaultTreeCellRenderer {
 	
 	@Override public void paintComponent(Graphics g) {
 		Graphics2D gra = (Graphics2D) g;
-		App.adjustAntialias(gra,true);
+		NNUEdit.adjustAntialias(gra,true);
 		
 		Graphics2D gr = new SmartGraphics2D((Graphics2D) g,new Rectangle(100,100)) {
 			@Override public void setRenderingHint(Key hintKey, Object hintValue) {
