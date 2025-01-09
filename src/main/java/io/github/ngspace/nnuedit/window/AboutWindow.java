@@ -13,7 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.asset_manager.StringTable;
@@ -26,12 +26,12 @@ public class AboutWindow extends WindowMenu implements Window {
 
 	private static final long serialVersionUID = 6893937793741839803L;
 	public static final String GITHUBURL = "https://github.com/NGSpace/NNUEdit";
-	public final App app;
+	public final NNUEdit app;
 
 	protected NGSScrollPane sp;
 	protected Tab tab;
 
-	public AboutWindow(App app) {
+	public AboutWindow(NNUEdit app) {
         this.app = app;
 		this.sp = new NGSScrollPane(app);
 		
@@ -99,5 +99,5 @@ public class AboutWindow extends WindowMenu implements Window {
 	@Override public NGSScrollPane getScrollPane() {return sp;}
 	@Override public JComponent getComponent() {return this;}
 	@Override public Tab getTab() {return tab;}
-	@Override public App getApp() {return app;}
+	@Override public NNUEdit getApp() {return app;}
 }

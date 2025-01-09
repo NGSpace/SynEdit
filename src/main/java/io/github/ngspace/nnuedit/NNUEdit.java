@@ -73,7 +73,7 @@ import io.github.ngspace.nnuedit.window.abstractions.Window;
 /**
  * the editor
  */
-public class App extends JFrame implements WindowListener, AWTEventListener {
+public class NNUEdit extends JFrame implements WindowListener, AWTEventListener {
 	private static final long serialVersionUID = 5770603365260133811L;
 	
 	public static final String PROJ = "project";
@@ -106,7 +106,7 @@ public class App extends JFrame implements WindowListener, AWTEventListener {
 	 * @param filepath the path to read from upon startup (leave empty for none)
 	 * @throws IOException
 	 */
-	public App(String filepath) throws IOException {
+	public NNUEdit(String filepath) throws IOException {
 		
 		MenuBG = getColor();
 		
@@ -139,9 +139,9 @@ public class App extends JFrame implements WindowListener, AWTEventListener {
         if (!"".equals(startfolder)) Folder.setFolderPath(startfolder);
         
         setContentPane(pane);
-    	try {setDefaultLookAndFeelDecorated(true);
+    	try {
     		getRootPane().putClientProperty("JRootPane.titleBarForeground", Color.white);
-    		getRootPane().putClientProperty("JRootPane.menuBarEmbedded", false);
+    		getRootPane().putClientProperty("JRootPane.menuBarEmbedded", true);
     	} catch (Exception e) {System.err.println("UI Exception caught: " + e.getLocalizedMessage());}
         
         //Menu
@@ -212,7 +212,7 @@ public class App extends JFrame implements WindowListener, AWTEventListener {
         };
         new DropTarget(this,DnDConstants.ACTION_COPY, myDragDropListener, true, null);
         
-        addWindowStateListener(e -> redraw());
+        addWindowStateListener(_ -> redraw());
         addWindowListener(this);
         
         addWindowFocusListener(new WindowFocusListener() {
@@ -226,14 +226,14 @@ public class App extends JFrame implements WindowListener, AWTEventListener {
 		getRootPane().addComponentListener(new ComponentAdapter() {
 			private void exec() {redraw();}
         	@Override public void componentResized(ComponentEvent e) {exec();}
-        	@Override public void componentMoved(ComponentEvent e)   {exec();}
-			@Override public void componentShown(ComponentEvent e)   {exec();}
-			@Override public void componentHidden(ComponentEvent e)  {exec();}
+        	@Override public void componentMoved  (ComponentEvent e) {exec();}
+			@Override public void componentShown  (ComponentEvent e) {exec();}
+			@Override public void componentHidden (ComponentEvent e) {exec();}
 		});
         
         getRootPane().setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, Collections.emptySet());
 		
-		Main.settings.addRefreshListener(s-> {
+		Main.settings.addRefreshListener(_-> {
 			isbusy = true;
 			revalidate();
 			redraw();
@@ -646,7 +646,7 @@ public class App extends JFrame implements WindowListener, AWTEventListener {
 						try {
 			        		if (settings.getBoolean("system.debugbutton")) {
 			        			Registries.WindowFactories.clear();
-			        			Registries.WindowFactories.put(Editor.DEFAULT, (a,f) -> new AboutWindow(a));
+			        			Registries.WindowFactories.put(Editor.DEFAULT, (a,_) -> new AboutWindow(a));
 			        		}
 						} catch (Exception e1) {
 							e1.printStackTrace();

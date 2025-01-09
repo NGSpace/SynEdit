@@ -2,7 +2,6 @@ package io.github.ngspace.nnuedit.utils;
 
 import static java.lang.System.out;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -28,15 +27,17 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.mozilla.universalchardet.UniversalDetector;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
+import io.github.ngspace.nnuedit.utils.desktop.DesktopApi;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 
 public class FileIO {
 	private FileIO() {}
 	
 	public static Map<String, String> filetypes = new HashMap<String, String>();
-	public static String[] imagetypes = {"png","jpg", "jpeg","bmp","wbmp","gif","tiff","tif","webp","ico"}; static {
+	public static String[] imagetypes = {"png","jpg", "jpeg","bmp","wbmp","gif","tiff","tif","webp","ico"};
+	static {
 		for (String fex : imagetypes) filetypes.put(fex, "img");
 		filetypes.put("mp3","audio");
 		filetypes.put("mp4","video");
@@ -151,7 +152,7 @@ public class FileIO {
 	 * @throws UnsupportedEncodingException
 	 */
 	public static String getProgramPath() throws UnsupportedEncodingException {
-		URL url = App.class.getProtectionDomain().getCodeSource().getLocation();
+		URL url = NNUEdit.class.getProtectionDomain().getCodeSource().getLocation();
 		String jarPath = URLDecoder.decode(url.getFile(), "UTF-8");
 		return new File(jarPath).getParentFile().getPath();
 	}
@@ -165,11 +166,13 @@ public class FileIO {
 	 */
 	public static String getConfigFolderPath() {
 		try {
-			return getProgramPath() + "/" + Main.EFFECTIVE_EDITORNAME + "/";
+			if (Main.VersionInfo.isWindows())
+				return getProgramPath() + "\\" + Main.EFFECTIVE_EDITORNAME + "\\";
+			else return System.getProperty("user.home")+"/.config/" + Main.EFFECTIVE_EDITORNAME + "/";
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-			//Where ever the fuck this is located
-			return "/" + Main.EFFECTIVE_EDITORNAME + "/";
+			//in a previous version, it tried to modify the root folder...
+			return "./" + Main.EFFECTIVE_EDITORNAME + "/";
 		}
 	}
 	
@@ -177,16 +180,16 @@ public class FileIO {
 	
 	/**
 	 * opens the file dialog
-	 * @param save whether to show a save button or not
+	 * @param save whether to show a save button or open button
 	 * @return the selected file (returns null otherwise)
 	 */
 	public static String openFileDialog(boolean save) {
 		String res = null;
-		if (!"universal".equals(Main.VersionInfo.platform)) {
+		if (Main.VersionInfo.isSWTSupported()) {
 			Display display = new Display ();
 	        Shell shell = new Shell (display);
 	        
-	        FileDialog dialog = new FileDialog (shell, save ? SWT.SAVE : SWT.OPEN);
+	        FileDialog dialog = new FileDialog(shell, save ? SWT.SAVE : SWT.OPEN);
 	        
 	        dialog.open();
 	        res = dialog.getFilterPath() + "/" + dialog.getFileName();
@@ -207,17 +210,15 @@ public class FileIO {
 	
 	
 	/**
-	 * opens the file dialog
-	 * @param save whether to show a save button or not
-	 * @return the selected file (returns null otherwise)
+	 * opens the folder dialog
+	 * @return the selected folder (returns null otherwise)
 	 */
 	public static String openFolderDialog() {
 		String res = "";
-		if (!"universal".equals(Main.VersionInfo.platform)) {
+		if (Main.VersionInfo.isSWTSupported()) {
 		    Display display = new Display();
 		    Shell shell = new Shell(display);
 		    DirectoryDialog dialog = new DirectoryDialog(shell);
-//		    dialog.setFilterPath("c:\\"); // Windows specific
 		    res = dialog.open();
 		    display.dispose();
 		} else {
@@ -237,8 +238,8 @@ public class FileIO {
 
 	public static void openInExplorer(File file) {
 		try {
-			Desktop.getDesktop().browse(file.toURI());
-		} catch (IOException e) {
+			DesktopApi.browse(file.toURI());
+		} catch (Exception e) {
 			e.printStackTrace();
 			UserMessager.showErrorDialogTB("err.openinexplorer.title", "err.openinexplorer", e.getMessage());
 		}

@@ -22,20 +22,20 @@ import javax.swing.text.JTextComponent;
 import org.fife.ui.rsyntaxtextarea.folding.Fold;
 import org.fife.ui.rsyntaxtextarea.folding.FoldManager;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.menu.EditorTextArea;
 
 public class NGSScrollPane extends JScrollPane implements MouseListener, MouseMotionListener {
 
 	private static final long serialVersionUID = 3952255173637165838L;
-	private App app;
+	private NNUEdit app;
 	public int Number = 0;
 	
 	
 	
-	public NGSScrollPane(App app, Container contentPane) {this(app);this.getViewport().setView(contentPane);}
-	public NGSScrollPane(App app) {super();this.app=app;init();}
+	public NGSScrollPane(NNUEdit app, Container contentPane) {this(app);this.getViewport().setView(contentPane);}
+	public NGSScrollPane(NNUEdit app) {super();this.app=app;init();}
 	
 	
 	
@@ -61,14 +61,14 @@ public class NGSScrollPane extends JScrollPane implements MouseListener, MouseMo
 		});
 	}
 	
-	@Override public void paint(Graphics g) {App.adjustAntialias(g, false);super.paint(g);g.dispose();}
+	@Override public void paint(Graphics g) {NNUEdit.adjustAntialias(g, false);super.paint(g);g.dispose();}
 	
 	/**
 	 * My proudest peice of code
 	 */
 	public void paintLines(Graphics g) {
 		if (getViewport().getView() instanceof EditorTextArea i && Main.settings.getBoolean("editor.numberlines")) {
-			App.adjustAntialias(g,false);
+			NNUEdit.adjustAntialias(g,false);
 			FoldManager fm = i.getFoldManager();
 			Point position = getViewport().getViewPosition();
 			Rectangle r = getViewport().getViewRect();
@@ -105,7 +105,7 @@ public class NGSScrollPane extends JScrollPane implements MouseListener, MouseMo
 	public void paintSeperators(Graphics2D gra) {
 		if (!app.isFolderOpen()) return;
 		gra.setColor(app.pane.getBackground());
-		gra.fillRect(0, 0, App.getBuffer(), getHeight());
+		gra.fillRect(0, 0, NNUEdit.getBuffer(), getHeight());
 	}
 	
 	@Override public void repaint() {revalidate();super.repaint();}

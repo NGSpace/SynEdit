@@ -4,11 +4,13 @@ import static io.github.ngspace.nnuedit.folder_management.FolderPanel.ROW_HEIGHT
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
@@ -25,33 +27,29 @@ public class AssetManager {private AssetManager() {}
 	static Map<? extends CharSequence, Object> strings = new StringTable.StringTableMap("en").getMap();
 	public static Map<String, Icon> icons = new HashMap<String,Icon>();
 	public static Map<String, ImageIcon> imgs = new HashMap<String, ImageIcon>();
-	public static Map<String, Object> fileext = new Settings(Utils.getAssetAsStream("FileExt.properties")).getMap();
+	public static Map<String, Object> fileext = new Settings(Utils.getAsset("FileExt.properties")).getMap();
+	
+	static String[] IconNames = {
+			"c", "cpp", "css", "html", "java", "javascript", "python", "typescript", "xml",
+			
+			"ui/bar", "ui/close", "ui/file", "ui/folder", "ui/imageicon", "ui/missingicon", "ui/newfile",
+			"ui/newfolder", "ui/NNUEdit", "ui/NNUEdit24x24", "ui/NNUEdit72x72", "ui/refresh", "ui/shell"
+		};
 	
 	
 	
-	public static void addDefaultIcons() throws IOException {
-		
-		/**
-		 * Some time ago I was fucking around on a different project and
-		 * I found out you can read how many files a package has by reading the folder
-		 * so you don't have to hardcode everyfile.
-		 */
-		
-		String[] IconNames = Utils.concatArrays(Utils.getResourcesName("io.github.ngspace.nnuedit.Assets.Icons"),
-				Utils.getResourcesName("io.github.ngspace.nnuedit.Assets.Icons.ui", "ui/"));
-	    
+	public static void addDefaultIcons() {
 		for (String i : IconNames) {
 			String[] p = i.split("/");
 			String name = p[p.length-1];
-			icons.put(name, ImageUtils.resizeIcon(ImageUtils.readIconAsset(i + ".png"),ROW_HEIGHT,ROW_HEIGHT));
+			icons.put(name, ImageUtils.resizeIcon(readIconAsset(i + ".png"),ROW_HEIGHT,ROW_HEIGHT));
 		}
 		
 		if (icons.get("file")==null)
 			icons.put("file",ImageUtils.resizeIcon(UIManager.getIcon("FileView.fileIcon"),ROW_HEIGHT,ROW_HEIGHT));
 		
 		if (icons.get("folder")==null)
-			icons.put
-				("folder",ImageUtils.resizeIcon(UIManager.getIcon("FileView.directoryIcon"),ROW_HEIGHT,ROW_HEIGHT));
+			icons.put("folder",ImageUtils.resizeIcon(UIManager.getIcon("FileView.directoryIcon"),ROW_HEIGHT,ROW_HEIGHT));
 		
 		icons.put("unix",icons.get("shell"));
 		icons.put("bat",icons.get("shell"));
@@ -68,7 +66,7 @@ public class AssetManager {private AssetManager() {}
 	
 	public static Icon getIcon(String name) {
 		Icon c = icons.get(name);
-		if (c==null) putIcon(name, ImageUtils.readIconAsset(name + ".png"));
+		if (c==null) putIcon(name, readIconAsset(name + ".png"));
 		return icons.get(name);
 	}
 	
@@ -105,6 +103,23 @@ public class AssetManager {private AssetManager() {}
 			return AssetManager.getIcon("file");
 		return ic;
 	}
+	
+	
+
+	public static ImageIcon readIconAsset(String name) {
+		try {
+			InputStream is;
+			if ((is = Utils.getAsset("Icons/" + name))==null) {
+				return ImageUtils.getMissingIcon();
+			}
+			return new ImageIcon(ImageIO.read(is));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return ImageUtils.getMissingIcon();
+		}
+	}
+	
+	
 	
 	
 	

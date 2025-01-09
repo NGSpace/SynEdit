@@ -3,7 +3,7 @@ package io.github.ngspace.nnuedit.runner;
 import java.io.File;
 import java.io.IOException;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.menu.EditorTextArea;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
@@ -25,14 +25,14 @@ public class ShellRunner implements IRunner {
 	}
 
 	@Override
-	public boolean canRun(App app) {
+	public boolean canRun(NNUEdit app) {
 		Window selwin = app.getSelectedWindow();
 		return (selwin!=null&&(selwin.getComponent() instanceof EditorTextArea tx
 				&&validFileExt(FileExtentions,tx.getFilePath())))||containsFiles(getStarterFiles(),app)!=null;
 	}
 
 	@Override
-	public void run(App app) {
+	public void run(NNUEdit app) {
 		try {
 			Window w = app.getSelectedWindow();
 			
@@ -50,7 +50,7 @@ public class ShellRunner implements IRunner {
 	}
 
 	@Override
-	public void runFile(File f, App app) throws IOException {
+	public void runFile(File f, NNUEdit app) throws IOException {
 		/* Can't use Main.SYSTEM because universal might be used on a windows device */
 		if (System.getProperty("os.name").toLowerCase().contains("windows")) {
 			ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start cmd /c \"" + f.getPath() + shouldPause() + "\"");
@@ -65,5 +65,5 @@ public class ShellRunner implements IRunner {
 	
 	private String shouldPause() {return (Main.settings.getBoolean("pauseaftershellrun") ? " & pause" : "");}
 
-	@Override public boolean canRunFile(File f, App app) {return validFileExt(FileExtentions,(f.getPath()));}
+	@Override public boolean canRunFile(File f, NNUEdit app) {return validFileExt(FileExtentions,(f.getPath()));}
 }

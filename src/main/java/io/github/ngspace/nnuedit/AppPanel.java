@@ -11,18 +11,18 @@ public class AppPanel extends JPanel {
 
 	private static final long serialVersionUID = 890330040427900164L;
 	public static int RoundedBox = 20;
-	public final App app;
+	public final NNUEdit app;
 	
-	public AppPanel(App app) {this.app = app;}
+	public AppPanel(NNUEdit app) {this.app = app;}
 	
 	@Override public void paint(Graphics gra) {
 		super.paint(gra);
 		if (app.getSelectedWindow()==null||!app.getSelectedWindow().getScrollPane().isVisible()) {
     		Graphics2D g = (Graphics2D) gra;
-    		g.setFont(App.getTipFont());
-    		g.setColor(App.MenuFG);
+    		g.setFont(NNUEdit.getTipFont());
+    		g.setColor(NNUEdit.MenuFG);
     		
-    		App.adjustAntialias(g,true);
+    		NNUEdit.adjustAntialias(g,true);
     		
     		String string = getRaw("system.clickhere");
     		String[] strs = string.split("%",2);

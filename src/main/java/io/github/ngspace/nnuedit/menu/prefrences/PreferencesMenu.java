@@ -13,7 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.border.EmptyBorder;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.menu.components.SmartJLabel;
 import io.github.ngspace.nnuedit.menu.prefrences.options.AOption;
@@ -56,11 +56,11 @@ public class PreferencesMenu extends WindowMenu {
 		setBackground(Window.color);
 		setForeground(Color.white.darker());
 		
-        setBorder(new EmptyBorder(0,App.getBuffer(),0,0));
+        setBorder(new EmptyBorder(0,NNUEdit.getBuffer(),0,0));
 		setLayout(null);
 		
-		Main.settings.addRefreshListener(s->refresh());
-		window.getApp().addRedrawListener(a->refresh());
+		Main.settings.addRefreshListener(_->refresh());
+		window.getApp().addRedrawListener(_->refresh());
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public class PreferencesMenu extends WindowMenu {
 					text.setForeground(hoverColor);
 				}
 				@Override public void mouseExited(MouseEvent e) {
-					if (tab!=selectedTab) text.setForeground(App.MenuFG);
+					if (tab!=selectedTab) text.setForeground(NNUEdit.MenuFG);
 					else text.setForeground(selectedColor);
 					text.setFont(f);
 				}

@@ -8,15 +8,15 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 
 public class FolderButton extends JButton {
 	
 	private static final long serialVersionUID = 1696619060167421515L;
 	
-	private App app;
+	private NNUEdit app;
 
-	public FolderButton(App app) {
+	public FolderButton(NNUEdit app) {
 		this.app=app;
     	setOpaque(true);
     	setBorderPainted(false); 
@@ -40,7 +40,7 @@ public class FolderButton extends JButton {
 		int h = he - 5;
 		g.setColor(app.MenuBG);
 		g.fillOval(x-(w/2), y, w, h);
-		App.adjustAntialias(g,false);
+		NNUEdit.adjustAntialias(g,false);
 	    g.setComposite(AlphaComposite.getInstance(
 	            AlphaComposite.SRC_OVER, .3f));
 	    g.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

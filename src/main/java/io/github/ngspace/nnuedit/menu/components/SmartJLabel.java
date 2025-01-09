@@ -10,7 +10,7 @@ import java.awt.Stroke;
 
 import javax.swing.JLabel;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 
 public class SmartJLabel extends JLabel {
 	
@@ -29,7 +29,7 @@ public class SmartJLabel extends JLabel {
 		super.setBackground(c);
 	}
 
-	public SmartJLabel() {setForeground(App.MenuFG);}
+	public SmartJLabel() {setForeground(NNUEdit.MenuFG);}
 	public SmartJLabel(Object o) {this();setText(String.valueOf(o));}
 
 	@Override
@@ -46,7 +46,7 @@ public class SmartJLabel extends JLabel {
 			
 			Stroke s = new BasicStroke(strokesize, 2, 0);
 			
-			App.adjustAntialias(g, false);
+			NNUEdit.adjustAntialias(g, false);
 			
 	        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 	        g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);

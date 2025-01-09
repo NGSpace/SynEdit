@@ -13,7 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.tree.TreePath;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.utils.FileIO;
 import io.github.ngspace.nnuedit.utils.user_io.UserMessager;
 import io.github.ngspace.nnuedit.window.abstractions.Editor;
@@ -23,7 +23,7 @@ public class FolderPopup extends JPopupMenu {
 	
 	private static final long serialVersionUID = 5845511693212284567L;
 	FolderPanel fp;
-	App app;
+	NNUEdit app;
 	
 	public FolderPopup(FolderPanel fp) {
 		this.fp = fp;
@@ -41,7 +41,7 @@ public class FolderPopup extends JPopupMenu {
 		this.removeAll();
 		
 		JMenuItem DELETE = new JMenuItem(get("folder.ctx.delete"));
-		DELETE.addActionListener(e -> {
+		DELETE.addActionListener(_ -> {
 			try {
 				int res = UserMessager.confirmTB("confirm.delete", "confirm.delete");
 				if (res==UserMessager.YES) {
@@ -57,7 +57,7 @@ public class FolderPopup extends JPopupMenu {
         });
 		
 		JMenuItem RENAME = new JMenuItem(get("folder.ctx.rename"));
-		RENAME.addActionListener(e -> {
+		RENAME.addActionListener(_ -> {
 			Object res = UserMessager.inputTB(f.getName(), "input.newfile");
 			if (res!=null) {
 				
@@ -74,14 +74,14 @@ public class FolderPopup extends JPopupMenu {
         });
 		
 		JMenuItem REFRESH = new JMenuItem(get("folder.ctx.refresh"));
-		REFRESH.addActionListener(e -> fp.refresh(true));
+		REFRESH.addActionListener(_ -> fp.refresh(true));
 		
 		JMenuItem OPENINEXPLORER = new JMenuItem(get("folder.ctx.openinexp"));
-		OPENINEXPLORER.addActionListener(e -> FileIO.openInExplorer(f.getParentFile()));
+		OPENINEXPLORER.addActionListener(_ -> FileIO.openInExplorer(f.getParentFile()));
 		
 		if (f!=null&&f.isDirectory()) {
 			JMenuItem NewFile = new JMenuItem(get("folder.ctx.newfile"));
-			NewFile.addActionListener(e -> {
+			NewFile.addActionListener(_ -> {
 				try {
 					Object path = UserMessager.inputTB("", "input.newfile");
 					if (path!=null) {
@@ -101,7 +101,7 @@ public class FolderPopup extends JPopupMenu {
 				} catch (IOException e1) {e1.printStackTrace();}
 	        });
 			JMenuItem NewFolder = new JMenuItem(get("folder.ctx.newfolder"));
-			NewFolder.addActionListener(e -> {
+			NewFolder.addActionListener(_ -> {
 				Object path =UserMessager.inputTB("", "input.newfolder");
 				if (path!=null) {
 					out.println("Creating Folder " + f.getAbsolutePath() + File.separatorChar + path);
@@ -133,7 +133,7 @@ public class FolderPopup extends JPopupMenu {
 			add(OPENINEXPLORER);
 			if (!f.isDirectory()) {
 				JMenuItem OpenInEditor = new JMenuItem(get("folder.ctx.openwitheditor"));
-				OpenInEditor.addActionListener(e -> app.openDefaultTextEditor(f));
+				OpenInEditor.addActionListener(_ -> app.openDefaultTextEditor(f));
 				add(OpenInEditor);
 			}
 		} else {

@@ -3,7 +3,7 @@ package io.github.ngspace.nnuedit.window;
 import javax.swing.JComponent;
 import javax.swing.ScrollPaneConstants;
 
-import io.github.ngspace.nnuedit.App;
+import io.github.ngspace.nnuedit.NNUEdit;
 import io.github.ngspace.nnuedit.Main;
 import io.github.ngspace.nnuedit.asset_manager.AssetManager;
 import io.github.ngspace.nnuedit.asset_manager.StringTable;
@@ -17,9 +17,9 @@ public class PreferencesWindow implements Window {
 	protected PreferencesMenu menu;
 	protected NGSScrollPane sp;
 	protected Tab tab;
-	protected App app;
+	protected NNUEdit app;
 	
-	public PreferencesWindow(App app) {
+	public PreferencesWindow(NNUEdit app) {
         this.app = app;
 		this.sp = new NGSScrollPane(getApp());
 		getApp();
@@ -36,5 +36,5 @@ public class PreferencesWindow implements Window {
 	@Override public NGSScrollPane getScrollPane() {return sp;}
 	@Override public JComponent getComponent() {return menu;}
 	@Override public Tab getTab() {return tab;}
-	@Override public App getApp() {return app;}
+	@Override public NNUEdit getApp() {return app;}
 }
